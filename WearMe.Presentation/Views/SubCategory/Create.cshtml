@@ -1,0 +1,74 @@
+﻿@* @model WearMe.DataAccess.Entitities.Subcategory *@
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Subcategory</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" asp-controller="Subcategory"  method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           
+            <div class="form-group">
+                <label name="Name" class="control-label"></label>
+                <input  name="Name" class="form-control" />
+               
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Choose Category</label>
+                <select class="form-select"  name="CategoryId">
+                    <option selected>Open this select menu</option>
+                    @{
+                        var categories = ViewData["categories"] as IEnumerable<Category>;
+                        if (categories != null)
+                        {
+                            foreach (var category in categories)
+                            {
+                                <option value="@category.Id" >@category.Name</option>
+                            }
+                        }
+                       
+                      
+                  
+                    }
+                  
+                </select>
+            </div>
+           @{if(ViewBag.Msg!=null)
+            {
+                <span>@ViewBag.Msg</span>
+            }}
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Select Category Type</label>
+                <select class="form-select" name="CategoryType" >
+                    <option selected>Open this select menu</option>
+                    @{
+                        var categoryTypes = ViewData["categoryTypes"] as IEnumerable<CategoryType>;
+                        if (categoryTypes != null)
+                        {
+                            foreach (var type in categoryTypes)
+                            {
+                                <option value="@type.Id" >@type.Name</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

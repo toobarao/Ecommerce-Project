@@ -1,0 +1,26 @@
+﻿@model ImageViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    <div class="container">
+        <div class="w-50 d-flex  flex-row">
+        <div class="">
+    <ul>
+            @foreach (var Image in (List<Images>)Model.images)
+    {
+        <li><img class="img-fluid"src="@Image.ImageUrl"/></li>
+    }
+        </ul>
+            </div>
+        </div>
+        <div class="">
+        <h1>@Model.Product.Name</h1>
+        <p>@Model.Product.Price</p>
+        <p></p>
+        <p>@Model.Product.Description</p>
+        </div>
+
+    </div>
+}

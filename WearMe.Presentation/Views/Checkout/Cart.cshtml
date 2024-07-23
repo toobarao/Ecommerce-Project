@@ -1,0 +1,28 @@
+﻿@model CartViewModel;
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Product</th>
+              <th>quantity</th>
+            <th>total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var cartproduct in Model.cartProducts)
+        {
+            <tr>
+                <td>
+                    <img src="@cartproduct.ProductViewModel.ImageUrl" class="img-fluid"/>
+                    <span>@cartproduct.ProductViewModel.product.Name</span>
+                    <span>@cartproduct.ProductViewModel.product.Price</span>
+                </td>
+                 <td>@cartproduct.Quantity</td>
+                <td>@cartproduct.Price</td>
+            </tr>
+        }
+    </tbody>
+    </table>
+    <h3>Subtotal @Model.Subtotal </h3>
+   <a href="@Url.Action("Information","Checkout")">Checkout</a>
+    <button>Continue Shopping</button>

@@ -1,0 +1,114 @@
+﻿@model WearMe.DataAccess.Entitities.Product
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+              
+               @*  <input asp-for="Id" class="form-control" /> *@
+              
+           
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Choose SubCategory</label>
+                <select class="form-select" aria-label="Default select example" asp-for="Subcategory.Id">
+                    <option selected>Open this select menu</option>
+                    @{
+                        if (ViewData["subcategories"] != null)
+                        {
+                            foreach (var subcategory in (List<Subcategory>)ViewData["subcategories"])
+                            {
+                                <option value="@subcategory.Id">@subcategory.Name</option>
+                            }
+                        }
+                        }
+                      
+                    
+                </select>
+
+            </div>
+            <div class="mb-3">
+                  <a asp-controller="Color" asp-action="Create">Add Color</a>
+                   <label for="exampleFormControlInput1" class="form-label">Choose Color</label>
+            <select class="form-select" multiple aria-label="multiple select example" name="colors">
+  <option selected>Open this select menu</option>
+    @{
+                    if (ViewData["colors"] != null)
+                    {
+                        
+                        @foreach(var color in (List<Color>)ViewData["colors"])
+                        {
+                            <option value="@color.Id">@color.Name</option>
+                        }
+                    }
+                }
+</select>
+</div>
+            
+
+            <div class="mb-3">
+                <a asp-controller="Size" asp-action="Create">Add Size</a>
+                <label for="exampleFormControlInput1" class="form-label">Choose Sizes</label>
+                 <select class="form-select" aria-label="Default select example" name="sizes" multiple>
+                            <option selected>Open this select menu</option>
+                @{
+                    if (ViewData["sizes"] != null)
+                    {
+                        
+                        @foreach(var size in (List<Size>)ViewData["sizes"])
+                        {
+                            <option value="@size.Id">@size.Name</option>
+                        }
+                    }
+                }
+                
+  
+                </select>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+                <div class="form-group">
+                    <label class="control-label">Choose Feature Image</label>
+                    <input type="file" id="files" name="File"  />
+
+                </div>
+            <div class="form-group">
+                <label  class="control-label">Choose Detail Images</label>
+                 <input type="file" id="files" name="Files" multiple />
+                
+            </div>
+           
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

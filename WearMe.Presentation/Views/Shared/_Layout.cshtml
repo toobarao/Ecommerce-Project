@@ -1,0 +1,193 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WearMe.Presentation</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WearMe.Presentation.styles.css" asp-append-version="true" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Add to cart
+            $('.addToCartBtn').click(function () {
+                var productId = $(this).data('product-id');
+                $.ajax({
+                    url: '/Cart/AddToCart',
+                    type: 'POST',
+                    data: { productId: productId },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                        }
+                    }
+                });
+            });
+
+            // Remove from cart
+            $('.removeFromCartBtn').click(function () {
+                var productId = $(this).data('product-id');
+                $.ajax({
+                    url: '/Cart/RemoveFromCart',
+                    type: 'POST',
+                    data: { productId: productId },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                            $('#getCartBtn').click(); // Refresh the cart display
+                        }
+                    }
+                });
+            });
+
+            // Remove once from cart
+            $('.removeOnceBtn').click(function () {
+                var productId = $(this).data('product-id');
+                $.ajax({
+                    url: '/Cart/RemoveProductOnce',
+                    type: 'POST',
+                    data: { productId: productId },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                            $('#getCartBtn').click(); // Refresh the cart display
+                        }
+                    }
+                });
+            });
+
+            // Get all cart items
+            $('#getCartBtn').click(function () {
+                $.ajax({
+                    url: '/Cart/GetAllProductsFromCookie',
+                    type: 'GET',
+                    success: function (response) {
+                        if (response.success) {
+                            var itemsHtml = '<ul>';
+                            response.items.forEach(function (item) {
+                                itemsHtml += '<li>' + item + '</li>';
+                            });
+                            itemsHtml += '</ul>';
+                            $('#cartItems').html(itemsHtml);
+                        }
+                    }
+                });
+            });
+        });
+      /*  function setCookie(name, value, expire) {
+            var d = new Date();
+            d.setTime(d.getTime() + (expire * 24 * 60 * 60 * 1000)); // Set expiry date
+            var expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        function addCookie(name, productId, expire) {
+            let existingCookie = getCookie(name);
+            let productIds = existingCookie ? existingCookie.split(",") : [];
+            productIds.push(productId);
+
+            setCookie(name, productIds.join(","), expire);
+            alert("Product ID saved in cookies!");
+        }
+
+        function saveProductIdToCookie(productId) {
+            let cookieName = "productIds";
+            let expireDays = 30;
+
+            // Check if the cookie already exists
+            if (getCookie(cookieName) === "") {
+                setCookie(cookieName, productId, expireDays);
+            } else {
+                addCookie(cookieName, productId, expireDays);
+            }
+        }
+
+        function getCookie(name) {
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var cookies = decodedCookie.split(';');
+            console.log(document.cookie);
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.indexOf(name + "=") == 0) {
+                    
+                    return cookie.substring(name.length + 1, cookie.length);
+                }
+            }
+            return "";
+        }
+
+        function removeProductId(productId) {
+            let cookieName = "productIds";
+            let expireDays = 30;
+
+            let existingCookie = getCookie(cookieName);
+            let productIds = existingCookie ? existingCookie.split(",").map(Number) : [];
+
+            productIds = productIds.filter(number => number !== productId);
+
+            setCookie(cookieName, productIds.join(","), expireDays);
+        }
+
+        function subtractProductId(productId) {
+            let cookieName = "productIds";
+            let expireDays = 30;
+
+            let existingCookie = getCookie(cookieName);
+            let productIds = existingCookie ? existingCookie.split(",").map(Number) : [];
+
+            const index = productIds.indexOf(productId);
+            if (index !== -1) {
+                productIds.splice(index, 1);
+            }
+
+            setCookie(cookieName, productIds.join(","), expireDays);
+        }*/
+    </script>
+
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WearMe.Presentation</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        <li class="nav-item">
+                            <button onclick="getCookie('productIds')">cart </button>
+                        </li>
+                    </ul>
+                </div>
+                <partial name="_LoginPartial" />
+               
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - WearMe.Presentation - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,35 @@
+﻿<style>
+    #color {
+        box-sizing: border-box;
+        width: 20%;
+        padding: 0;
+        margin-bottom: 16px;
+        display: block;
+        border: 1px solid rebeccapurple;
+        border-radius: 25px;
+        background-color: #ffffff;
+        -webkit-appearance: none; /* For Safari and Chrome */
+        appearance: none;
+        height: 40px; /* Adjust height as needed */
+        outline: none;
+    }
+    #color::-webkit-color-swatch-wrapper {
+        padding: 0;
+        border-radius: 25px;
+    }
+
+    #color::-webkit-color-swatch {
+        border: none;
+        border-radius: 25px;
+    }
+
+</style>
+<div class="container">
+<form method="post">
+<div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Choose Color</label>
+    <input type="color" id="color" class="form-control" name="Name" >
+</div>
+ <button type="submit" class="btn btn-primary">Create</button>
+</form>
+</div>
